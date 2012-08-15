@@ -1,4 +1,3 @@
 require 'rspec'
-require 'social_blast/version'
+require 'social_blast'
 
-include SocialBlast

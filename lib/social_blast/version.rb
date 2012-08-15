@@ -1,4 +1,8 @@
-module SocialBlast
-  # social_blast version
-  VERSION = "0.1.0"
+class SocialBlast
+  VERSION = '0.1.0'
+
+  def self.version
+    VERSION
+  end
 end
+
