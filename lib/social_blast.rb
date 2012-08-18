@@ -5,7 +5,7 @@ require 'social_blast/twitter'
 
 class SocialBlast
   def self.on=(v)
-    @on = v
+    set('on', v)
   end
 
   def self.on?
@@ -16,12 +16,12 @@ class SocialBlast
     
   end
 
-  def self.posting_threshold_reached?
+  def self.threshold_reached?
 
   end
 
   def self.can_post?
-    on? and not posting_threshold_reached?
+    on? and not threshold_reached?
   end
 
   #
@@ -37,11 +37,36 @@ class SocialBlast
   private
 
   def self.on
-    (@on.nil? || @on) ? true : false
+    on = get('on')
+    (on.nil? || on) ? true : false
   end
 
   def self.rails?
     Kernel.const_defined?('Rails')
+  end
+
+  def self.set(name, val)
+    if rails?
+      Rails.cache.write(name, val)
+    else
+      instance_variable_set("@#{name}".to_sym, val)
+    end
+  end
+
+  def self.get(name)
+    if rails?
+      Rails.cache.fetch(name)
+    else
+      instance_variable_get("@#{name}".to_sym)
+    end
+  end
+
+  def set(name, val)
+    self.class.set(name, val)
+  end
+
+  def get(name)
+    self.class.get(name)
   end
 end
 

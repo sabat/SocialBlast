@@ -17,19 +17,19 @@ describe SocialBlast do
 
   it "says it can't post if it is not on" do
     SocialBlast.on = false
-    SocialBlast.stub(:posting_threshold_reached?).and_return(false)
+    SocialBlast.stub(:threshold_reached?).and_return(false)
     expect(SocialBlast.can_post?).to be_false
   end
 
   it "says it can't post if posting threshold is reached" do
     SocialBlast.on = true
-    SocialBlast.stub(:posting_threshold_reached?).and_return(true)
+    SocialBlast.stub(:threshold_reached?).and_return(true)
     expect(SocialBlast.can_post?).to be_false
   end
 
   it "says it can post if on and below posting threshold" do
     SocialBlast.on = true
-    SocialBlast.stub(:posting_threshold_reached?).and_return(false)
+    SocialBlast.stub(:threshold_reached?).and_return(false)
     expect(SocialBlast.can_post?).to be_true
   end
 
@@ -53,7 +53,7 @@ describe SocialBlast do
       # if countar var is NOT nil but the time now is
       #    > 1.hour from the saved timestamp, then reset
       # method: update!
-      # method: post_threshold_reached?
+      # method: threshold_reached?
 
 
     it "allows the posts-per-hour threshold to be set"
@@ -61,6 +61,7 @@ describe SocialBlast do
     it "resets the post count after one hour"
     it "will not post if the threshold has been reached"
     it "uses Rails.cache if running under Rails"
+      # this is for ALL global values including .on
     it "uses a class attr if not running under Rails"
   end
 
