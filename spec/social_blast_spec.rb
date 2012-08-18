@@ -15,6 +15,24 @@ describe SocialBlast do
     expect(SocialBlast.on?).to be_false
   end
 
+  it "says it can't post if it is not on" do
+    SocialBlast.on = false
+    SocialBlast.stub(:posting_threshold_reached?).and_return(false)
+    expect(SocialBlast.can_post?).to be_false
+  end
+
+  it "says it can't post if posting threshold is reached" do
+    SocialBlast.on = true
+    SocialBlast.stub(:posting_threshold_reached?).and_return(true)
+    expect(SocialBlast.can_post?).to be_false
+  end
+
+  it "says it can post if on and below posting threshold" do
+    SocialBlast.on = true
+    SocialBlast.stub(:posting_threshold_reached?).and_return(false)
+    expect(SocialBlast.can_post?).to be_true
+  end
+
   context "when initialized" do
     subject { SocialBlast.new('test msg') }
 

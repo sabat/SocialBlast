@@ -20,6 +20,10 @@ class SocialBlast
 
   end
 
+  def self.can_post?
+    on? and not posting_threshold_reached?
+  end
+
   #
 
   def initialize(msg)
