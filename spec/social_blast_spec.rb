@@ -21,9 +21,30 @@ describe SocialBlast do
     it "takes a message payload"
     it "fails without a message payload"
     it "does not deliver the payload if the 'on' switch isn't set"
+    it "delivers the payload to HootSuite if configured"
     it "delivers the payload to Twitter if configured"
     it "delivers the payload to Facebook if configured"
     it "delivers the payload to Google+ if configured"
   end
+
+  context "when posting" do
+    it "keeps track of posts per hour"
+      # logic:
+      # if counter var is nil, we are just starting,
+      #    so reset
+      # if countar var is NOT nil but the time now is
+      #    > 1.hour from the saved timestamp, then reset
+      # method: update!
+      # method: post_threshold_reached?
+
+
+    it "allows the posts-per-hour threshold to be set"
+    it "can report if the post threshold has been reached"
+    it "resets the post count after one hour"
+    it "will not post if the threshold has been reached"
+    it "uses Rails.cache if running under Rails"
+    it "uses a class attr if not running under Rails"
+  end
+
 end
 

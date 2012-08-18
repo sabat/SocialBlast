@@ -5,8 +5,8 @@ require File.expand_path('../lib/social_blast/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.name          = "social_blast"
   gem.version       = SocialBlast.version
-  gem.summary       = %q{TODO: Summary}
-  gem.description   = %q{TODO: Description}
+  gem.summary       = %q{Summary}
+  gem.description   = %q{Description}
   gem.license       = "MIT"
   gem.authors       = ["Steve Abatangle"]
   gem.email         = "sabat@area51.org"
