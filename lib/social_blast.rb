@@ -12,11 +12,11 @@ class SocialBlast
     self.on
   end
 
-  def self.social_posting_count=(v)
+  def self.posting_count=(v)
     
   end
 
-  def self.social_posting_threshold_reached?
+  def self.posting_threshold_reached?
 
   end
 
