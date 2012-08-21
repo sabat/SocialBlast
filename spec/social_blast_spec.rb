@@ -2,6 +2,8 @@ require 'spec_helper'
 require 'social_blast'
 
 describe SocialBlast do
+  after { SocialBlast.on = true }
+
   it "has a version number" do
     expect(SocialBlast.version).to_not be_empty
   end
@@ -22,15 +24,19 @@ describe SocialBlast do
   end
 
   it "says it can't post if posting threshold is reached" do
-    SocialBlast.on = true
     SocialBlast.stub(:threshold_reached?).and_return(true)
     expect(SocialBlast.can_post?).to be_false
   end
 
   it "says it can post if on and below posting threshold" do
-    SocialBlast.on = true
     SocialBlast.stub(:threshold_reached?).and_return(false)
     expect(SocialBlast.can_post?).to be_true
+  end
+
+  context "external services" do
+    subject { SocialBlast.new('test msg') }
+
+    its(:services) { should include(:twitter) }
   end
 
   context "when initialized" do
@@ -39,10 +45,10 @@ describe SocialBlast do
     it "takes a message payload"
     it "fails without a message payload"
     it "does not deliver the payload if the 'on' switch isn't set"
-    it "delivers the payload to HootSuite if configured"
-    it "delivers the payload to Twitter if configured"
-    it "delivers the payload to Facebook if configured"
-    it "delivers the payload to Google+ if configured"
+    it "delivers the payload to HootSuite if configured to"
+    it "delivers the payload to Twitter if configured to"
+    it "delivers the payload to Facebook if configured to"
+    it "delivers the payload to Google+ if configured to"
   end
 
   context "when posting" do

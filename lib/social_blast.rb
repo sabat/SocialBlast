@@ -1,11 +1,14 @@
 require 'social_blast/version'
-require 'social_blast/twitter'
+require 'social_blast/shm_store'
+require 'social_blast/services'
 # require 'social_blast/facebook'
 # require 'social_blast/googleplus'
 
 class SocialBlast
+  extend ShmStore
+
   def self.on=(v)
-    set('on', v)
+    set_val('on', v)
   end
 
   def self.on?
@@ -27,7 +30,8 @@ class SocialBlast
   #
 
   def initialize(msg)
-
+    @msg = msg
+    extend ShmStore
   end
 
   def deliver
@@ -37,36 +41,9 @@ class SocialBlast
   private
 
   def self.on
-    on = get('on')
+    on = get_val('on')
     (on.nil? || on) ? true : false
   end
 
-  def self.rails?
-    Kernel.const_defined?('Rails')
-  end
-
-  def self.set(name, val)
-    if rails?
-      Rails.cache.write(name, val)
-    else
-      instance_variable_set("@#{name}".to_sym, val)
-    end
-  end
-
-  def self.get(name)
-    if rails?
-      Rails.cache.fetch(name)
-    else
-      instance_variable_get("@#{name}".to_sym)
-    end
-  end
-
-  def set(name, val)
-    self.class.set(name, val)
-  end
-
-  def get(name)
-    self.class.get(name)
-  end
 end
 
