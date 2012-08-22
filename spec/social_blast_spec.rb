@@ -2,6 +2,8 @@ require 'spec_helper'
 require 'social_blast'
 
 describe SocialBlast do
+  before { SocialBlast::Services.stub(:constants).and_return([:Twitter]) }
+  subject { SocialBlast }
   after { SocialBlast.on = true }
 
   it "has a version number" do
@@ -33,26 +35,72 @@ describe SocialBlast do
     expect(SocialBlast.can_post?).to be_true
   end
 
-  context "external services" do
+  its(:services_available) { should include(:Twitter) }
+
+  context "when initializing" do
     subject { SocialBlast.new('test msg') }
 
-    its(:services) { should include(:twitter) }
+    it "fails to initialize without a message payload" do
+      expect { SocialBlast.new('') }.to raise_error(ArgumentError)
+      expect { SocialBlast.new(nil) }.to raise_error(ArgumentError)
+    end
   end
 
   context "when initialized" do
-    subject { SocialBlast.new('test msg') }
+    let(:mock_twitter) { mock SocialBlast::Services::Twitter }
+    let(:prep_successful_blast) do
+      mock_twitter.stub(:name).and_return(:Twitter)
+      mock_twitter.stub(:deliver).and_return(true)
+      SocialBlast.any_instance.stub(:have_service?).with(:Twitter).and_return(true)
+      SocialBlast.any_instance.stub(:configured?).with(:Twitter).and_return(true)
+      SocialBlast::Services::Twitter.stub(:new).with(blast.message).and_return(mock_twitter)
+      blast.add_service(:Twitter)
+    end
 
-    it "takes a message payload"
-    it "fails without a message payload"
-    it "does not deliver the payload if the 'on' switch isn't set"
-    it "delivers the payload to HootSuite if configured to"
-    it "delivers the payload to Twitter if configured to"
-    it "delivers the payload to Facebook if configured to"
-    it "delivers the payload to Google+ if configured to"
+    subject(:blast) { SocialBlast.new('test msg') }
+    before { mock_twitter }
+
+    its(:message) { should_not be_empty }
+
+    it "extends the ShmStore class"
+
+    it "does not deliver the payload if the 'on' switch isn't set" do
+      SocialBlast.on = false
+      blast.deliver.should be_false
+      blast.deliver.should_not be_nil
+    end
+
+    it "can be configured to deliver to a service it knows" do
+      prep_successful_blast
+      blast.add_service(:Twitter).should be_true
+      blast.delivering_to.should include(:Twitter)
+    end
+
+    it "cannot be configured to deliver to an unconfigured service" do
+      SocialBlast::Services::Twitter.should_receive(:configured?).and_return(false)
+      blast.add_service(:Twitter).should be_false
+    end
+
+    it "cannot be configured to deliver to an unknown service" do
+      blast.add_service(:Plurk).should be_false
+    end
+
+    it "delivers the payload to Twitter if configured" do
+      prep_successful_blast
+      blast.deliver.should be_true
+    end
+
+    it "delivers the payload to HootSuite if configured"
+    it "delivers the payload to Facebook if configured"
+    it "delivers the payload to Google+ if configured"
+    it "delivers the payload to Wordpress if configured"
+    it "delivers the payload to Tumblr if configured"
+    it "delivers the payload to LinkedIn if configured"
+    it "delivers the payload to Mixi if configured"
   end
 
   context "when posting" do
-    it "keeps track of posts per hour"
+    it "keeps track of posts per hour" do
       # logic:
       # if counter var is nil, we are just starting,
       #    so reset
@@ -61,6 +109,8 @@ describe SocialBlast do
       # method: update!
       # method: threshold_reached?
 
+      
+    end
 
     it "allows the posts-per-hour threshold to be set"
     it "can report if the post threshold has been reached"
