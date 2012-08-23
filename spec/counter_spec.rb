@@ -48,6 +48,8 @@ describe Counter do
       expect { counter.increment }.to change { counter.value }.to(0)
     end
 
+    its(:to_s) { should eq('0') }
+
   end
 end
 

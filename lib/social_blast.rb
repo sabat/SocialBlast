@@ -13,6 +13,8 @@ class SocialBlast
 
   attr_reader :message
 
+  DEFAULT_THRESHOLD = 3
+
   def self.on=(v)
     set_val('on', v)
   end
@@ -21,12 +23,24 @@ class SocialBlast
     self.on
   end
 
-  def self.posting_count=(v)
-    
+  def self.post_count
+    @post_count ||= Counter.new
+  end
+
+  def post_count
+    self.class.post_count
+  end
+
+  def self.threshold=(v)
+    @threshold = v
+  end
+
+  def self.threshold
+    @threshold ||= DEFAULT_THRESHOLD
   end
 
   def self.threshold_reached?
-
+    post_count.value >= self.threshold
   end
 
   def self.can_post?
@@ -50,6 +64,7 @@ class SocialBlast
   def deliver
     if SocialBlast.on
       @services.each { |s| s.deliver }
+      self.post_count.increment
     else
       false
     end
@@ -66,16 +81,6 @@ class SocialBlast
   def self.on
     on = get_val('on')
     (on.nil? || on) ? true : false
-  end
-
-  def self.reset_counter
-    set_val('counter_timestamp', DateTime.now)
-    set_val('counter', 0)
-  end
-
-  def self.counter
-    counter_val = get_val('counter')
-    counter_val.nil? ? reset_counter : counter_val
   end
 
   def self.services_available

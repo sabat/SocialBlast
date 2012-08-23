@@ -99,7 +99,36 @@ describe SocialBlast do
   end
 
   context "when posting" do
-    it "keeps track of posts per hour"
+    let(:mock_twitter) { mock SocialBlast::Services::Twitter }
+    before { mock_twitter }
+    subject(:blast) { SocialBlast.new('test msg') }
+
+    let(:prep_successful_blast) do
+      mock_twitter.stub(:name).and_return(:Twitter)
+      mock_twitter.stub(:deliver).and_return(true)
+      SocialBlast.any_instance.stub(:have_service?).with(:Twitter).and_return(true)
+      SocialBlast.any_instance.stub(:configured?).with(:Twitter).and_return(true)
+      SocialBlast::Services::Twitter.stub(:new).with(blast.message).and_return(mock_twitter)
+      blast.post_count.reset
+      blast.add_service(:Twitter)
+    end
+
+    it "can report its threshold" do
+      SocialBlast.threshold.should be_a_kind_of(Fixnum)
+    end
+
+    it "can have its threshold set" do
+      SocialBlast.threshold = 3
+      SocialBlast.threshold.should eq(3)
+    end
+
+    it "keeps track of posts per hour" do
+      prep_successful_blast
+      blast.deliver
+      SocialBlast.post_count.value.should eq(1)
+      blast.deliver
+      SocialBlast.post_count.value.should eq(2)
+    end
 
     it "allows the posts-per-hour threshold to be set"
     it "can report if the post threshold has been reached"

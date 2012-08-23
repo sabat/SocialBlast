@@ -47,6 +47,10 @@ class Counter
     end
   end
 
+  def to_s
+    self.value.to_s
+  end
+
   #
 
   private
