@@ -54,6 +54,12 @@ class SocialBlast
     end
   end
 
+  def remove_service(service)
+    if have_service?(service)
+      @services.delete_if { |s| s.name == service }
+    end
+  end
+
   def post_count
     @post_count ||= Counter.new
   end

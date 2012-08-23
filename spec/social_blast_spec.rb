@@ -85,6 +85,13 @@ describe SocialBlast do
       blast.add_service(:Plurk).should be_false
     end
 
+    it "can be configured to remove a service from delivery" do
+      prep_successful_blast
+
+      blast.remove_service(:Twitter).should be
+      blast.delivering_to.should_not include(:Twitter)
+    end
+
     it "delivers the payload to Twitter if configured" do
       prep_successful_blast
       blast.deliver.should be_true
