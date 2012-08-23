@@ -19,22 +19,6 @@ describe SocialBlast do
     expect(SocialBlast.on?).to be_false
   end
 
-  it "says it can't post if it is not on" do
-    SocialBlast.on = false
-    SocialBlast.stub(:threshold_reached?).and_return(false)
-    expect(SocialBlast.can_post?).to be_false
-  end
-
-  it "says it can't post if posting threshold is reached" do
-    SocialBlast.stub(:threshold_reached?).and_return(true)
-    expect(SocialBlast.can_post?).to be_false
-  end
-
-  it "says it can post if on and below posting threshold" do
-    SocialBlast.stub(:threshold_reached?).and_return(false)
-    expect(SocialBlast.can_post?).to be_true
-  end
-
   its(:services_available) { should include(:Twitter) }
 
   context "when initializing" do
@@ -60,14 +44,30 @@ describe SocialBlast do
     subject(:blast) { SocialBlast.new('test msg') }
     before { mock_twitter }
 
+    its(:on?) { should be_true }
     its(:message) { should_not be_empty }
 
-    it "extends the ShmStore class"
+    it { should be_kind_of(ShmStore) }
+
+    it "says it can't post if it is not on" do
+      SocialBlast.on = false
+      blast.stub(:threshold_reached?).and_return(false)
+      expect(blast.can_post?).to be_false
+    end
+
+    it "says it can't post if posting threshold is reached" do
+      blast.stub(:threshold_reached?).and_return(true)
+      expect(blast.can_post?).to be_false
+    end
+
+    it "says it can post if on and below posting threshold" do
+      blast.stub(:threshold_reached?).and_return(false)
+      expect(blast.can_post?).to be_true
+    end
 
     it "does not deliver the payload if the 'on' switch isn't set" do
       SocialBlast.on = false
-      blast.deliver.should be_false
-      blast.deliver.should_not be_nil
+      expect { blast.deliver }.to raise_error(PostingDisabledException)
     end
 
     it "can be configured to deliver to a service it knows" do
@@ -125,22 +125,40 @@ describe SocialBlast do
     it "keeps track of posts per hour" do
       prep_successful_blast
       blast.deliver
-      SocialBlast.post_count.value.should eq(1)
+      blast.post_count.value.should eq(1)
       blast.deliver
-      SocialBlast.post_count.value.should eq(2)
+      blast.post_count.value.should eq(2)
     end
 
     it "allows the posts-per-hour threshold to be set" do
       blast.class.threshold = 42
-      expect { blast.class.threshold }.to eq(42)
+      expect(blast.class.threshold).to eq(42)
     end
 
-    it "can report if the post threshold has been reached"
-    it "resets the post count after one hour"
-    it "will not post if the threshold has been reached"
-    it "uses Rails.cache if running under Rails"
-      # this is for ALL global values including .on
-    it "uses a class attr if not running under Rails"
+    it "reports if the post threshold has been reached" do
+      blast.post_count.value = 246
+      blast.threshold_reached?.should be_true
+    end
+
+    it "reports if the post threshold has not been reached" do
+      blast.post_count.value = 0
+      blast.threshold_reached?.should be_false
+    end
+
+    it "resets the post count after one hour" do
+      blast.post_count.value = blast.threshold
+      blast.post_count.timestamp = (Time.now - (60*60*2))
+      blast.post_count.increment
+
+      blast.post_count.value.should eq(0)
+    end
+
+    it "will not post if the threshold has been reached" do
+      prep_successful_blast
+      blast.post_count.value = blast.threshold + 1
+
+      expect { blast.deliver }.to raise_error(PostThresholdException)
+    end
   end
 
 end

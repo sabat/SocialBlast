@@ -4,9 +4,13 @@ require 'social_blast/shm_store'
 require 'social_blast/object'
 require 'social_blast/config'
 require 'social_blast/counter'
+require 'social_blast/exceptions'
 require 'social_blast/services'
 # require 'social_blast/facebook'
 # require 'social_blast/googleplus'
+# require 'social_blast/wordpress'
+# require 'social_blast/linkedin'
+# require 'social_blast/tumblr'
 
 class SocialBlast
   extend ShmStore
@@ -24,28 +28,12 @@ class SocialBlast
     self.on
   end
 
-  def self.post_count
-    @post_count ||= Counter.new
-  end
-
-  def post_count
-    self.class.post_count
-  end
-
   def self.threshold=(v)
     @threshold = v
   end
 
   def self.threshold
     @threshold ||= ( config.threshold || DEFAULT_THRESHOLD )
-  end
-
-  def self.threshold_reached?
-    post_count.value >= self.threshold
-  end
-
-  def self.can_post?
-    on? and not threshold_reached?
   end
 
   #
@@ -56,23 +44,48 @@ class SocialBlast
     @services = []
   end
 
+  def on?
+    self.class.on?
+  end
+
   def add_service(service)
     if have_service?(service) and configured?(service)
       @services << service_class(service).new(self.message)
     end
   end
 
+  def post_count
+    @post_count ||= Counter.new
+  end
+
   def deliver
     if SocialBlast.on
+      raise PostThresholdException if threshold_reached?
       @services.each { |s| s.deliver }
       self.post_count.increment
     else
-      false
+      raise PostingDisabledException
     end
   end
 
   def delivering_to
     @services.collect { |s| s.name }
+  end
+
+  def threshold=(v)
+    @threshold = v
+  end
+
+  def threshold
+    @threshold ||= self.class.threshold
+  end
+
+  def threshold_reached?
+    post_count.value >= self.threshold
+  end
+
+  def can_post?
+    on? and not threshold_reached?
   end
 
   #
