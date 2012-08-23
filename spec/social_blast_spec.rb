@@ -100,17 +100,7 @@ describe SocialBlast do
   end
 
   context "when posting" do
-    it "keeps track of posts per hour" do
-      # logic:
-      # if counter var is nil, we are just starting,
-      #    so reset
-      # if countar var is NOT nil but the time now is
-      #    > 1.hour from the saved timestamp, then reset
-      # method: update!
-      # method: threshold_reached?
-
-      
-    end
+    it "keeps track of posts per hour"
 
     it "allows the posts-per-hour threshold to be set"
     it "can report if the post threshold has been reached"
