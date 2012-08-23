@@ -96,7 +96,6 @@ describe SocialBlast do
     it "delivers the payload to Wordpress if configured"
     it "delivers the payload to Tumblr if configured"
     it "delivers the payload to LinkedIn if configured"
-    it "delivers the payload to Mixi if configured"
   end
 
   context "when posting" do
