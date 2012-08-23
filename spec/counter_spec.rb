@@ -22,6 +22,11 @@ describe Counter do
       expect(counter.interval).to eq(60)
     end
 
+    it "can have its value overridden" do
+      counter.value = 42
+      expect(counter.value).to eq(42)
+    end
+
     it "can have its timestamp overridden" do
       test_time = Time.now - (60*120) # > 1.hour.ago
       counter.timestamp = test_time
@@ -39,7 +44,8 @@ describe Counter do
 
     it "resets itself after <interval> minutes" do
       counter.timestamp = Time.now - (60*120) # > 1.hour.ago
-      expect(counter.value).to eq(0)
+      counter.value = 5
+      expect { counter.increment }.to change { counter.value }.to(0)
     end
 
   end

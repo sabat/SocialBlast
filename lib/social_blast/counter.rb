@@ -8,6 +8,10 @@ class Counter
     set_val('counter', 0) 
   end
 
+  def value=(v)
+    set_val('counter', v)
+  end
+
   def value
     val = get_val('counter')
     val.nil? ? reset : val
