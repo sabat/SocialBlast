@@ -2,6 +2,7 @@ require 'debugger'
 require 'social_blast/version'
 require 'social_blast/shm_store'
 require 'social_blast/object'
+require 'social_blast/config'
 require 'social_blast/counter'
 require 'social_blast/services'
 # require 'social_blast/facebook'
@@ -36,7 +37,7 @@ class SocialBlast
   end
 
   def self.threshold
-    @threshold ||= DEFAULT_THRESHOLD
+    @threshold ||= ( config.threshold || DEFAULT_THRESHOLD )
   end
 
   def self.threshold_reached?

@@ -117,7 +117,7 @@ describe SocialBlast do
       SocialBlast.threshold.should be_a_kind_of(Fixnum)
     end
 
-    it "can have its threshold set" do
+    it "can have its threshold set at the class level" do
       SocialBlast.threshold = 3
       SocialBlast.threshold.should eq(3)
     end
@@ -130,7 +130,11 @@ describe SocialBlast do
       SocialBlast.post_count.value.should eq(2)
     end
 
-    it "allows the posts-per-hour threshold to be set"
+    it "allows the posts-per-hour threshold to be set" do
+      blast.class.threshold = 42
+      expect { blast.class.threshold }.to eq(42)
+    end
+
     it "can report if the post threshold has been reached"
     it "resets the post count after one hour"
     it "will not post if the threshold has been reached"

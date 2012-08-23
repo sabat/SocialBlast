@@ -5,6 +5,7 @@ group :development, :test do
   gem 'debugger'
 end
 
+gem 'hashie'
 gem 'json'
 gem 'twitter'
 
