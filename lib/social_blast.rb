@@ -6,11 +6,7 @@ require 'social_blast/config'
 require 'social_blast/counter'
 require 'social_blast/exceptions'
 require 'social_blast/services'
-# require 'social_blast/facebook'
-# require 'social_blast/googleplus'
-# require 'social_blast/wordpress'
-# require 'social_blast/linkedin'
-# require 'social_blast/tumblr'
+require 'social_blast/string'
 
 class SocialBlast
   extend ShmStore
