@@ -15,4 +15,5 @@ gem 'twitter'
 # gem 'wordpress-com', git: 'https://github.com/mpasternacki/wordpress-com.git'
 # gem 'tumblr-rb', git: 'https://github.com/mwunsch/tumblr'
 # gem 'linkedin', git: 'https://github.com/pengwynn/linkedin.git'
+# gem 'foursquare', git: 'https://github.com/jeremyrwelch/Foursquare.git'
 

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe SocialBlast::Services::Twitter do
   subject { SocialBlast::Services::Twitter }
 
+  its(:name) { should eq(:Twitter) }
   its(:config) { should be_kind_of(Hashie::Mash) }
 
   context "when configured" do
@@ -16,8 +17,9 @@ describe SocialBlast::Services::Twitter do
   end
 
   context "when initialized" do
-    it "has a name"
-    it "has a message"
+    subject { SocialBlast::Services::Twitter.new('a message') }
+    its(:name) { should eq(:Twitter) }
+    its(:message) { should_not be_blank }
   end
 
   context "when delivering" do

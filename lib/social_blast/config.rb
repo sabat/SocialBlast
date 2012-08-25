@@ -3,7 +3,7 @@ require 'hashie'
 class SocialBlast
   class Configuration < Hashie::Mash; end
 
-  def self.config
+  def self.configure
     yield self.configuration if block_given?
     self.configuration
   end

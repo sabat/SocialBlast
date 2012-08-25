@@ -2,9 +2,10 @@ class SocialBlast
   module Services
 
     class Twitter
-      def self.config
-        true;debugger;true
+      def self.configure
+        SocialBlast.configure.twitter
       end
+
     end
 
   end
