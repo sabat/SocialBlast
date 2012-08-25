@@ -33,7 +33,7 @@ describe SocialBlast do
   context "when initialized" do
     let(:mock_twitter) { mock SocialBlast::Services::Twitter }
     let(:prep_successful_blast) do
-      mock_twitter.stub(:name).and_return(:Twitter)
+      mock_twitter.stub(:service_name).and_return(:Twitter)
       mock_twitter.stub(:deliver).and_return(true)
       SocialBlast.any_instance.stub(:have_service?).with(:Twitter).and_return(true)
       SocialBlast.any_instance.stub(:configured?).with(:Twitter).and_return(true)
@@ -111,7 +111,7 @@ describe SocialBlast do
     subject(:blast) { SocialBlast.new('test msg') }
 
     let(:prep_successful_blast) do
-      mock_twitter.stub(:name).and_return(:Twitter)
+      mock_twitter.stub(:service_name).and_return(:Twitter)
       mock_twitter.stub(:deliver).and_return(true)
       SocialBlast.any_instance.stub(:have_service?).with(:Twitter).and_return(true)
       SocialBlast.any_instance.stub(:configured?).with(:Twitter).and_return(true)

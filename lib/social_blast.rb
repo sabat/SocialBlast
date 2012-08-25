@@ -52,7 +52,7 @@ class SocialBlast
 
   def remove_service(service)
     if have_service?(service)
-      @services.delete_if { |s| s.name == service }
+      @services.delete_if { |s| s.service_name == service }
     end
   end
 
@@ -71,7 +71,7 @@ class SocialBlast
   end
 
   def delivering_to
-    @services.collect { |s| s.name }
+    @services.collect { |s| s.service_name }
   end
 
   def threshold=(v)
