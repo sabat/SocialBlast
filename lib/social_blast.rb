@@ -32,6 +32,27 @@ class SocialBlast
     def threshold
       @threshold ||= ( config.threshold || DEFAULT_THRESHOLD )
     end
+
+    def post_counter
+      @post_counter ||= Counter.new
+    end
+
+    def reset_post_count
+      post_counter.reset
+    end
+
+    def increment_post_count
+#true;debugger
+      post_counter.increment
+    end
+
+    def threshold_reached?
+      post_counter.value >= self.threshold
+    end
+
+    def can_post?
+      on? and not threshold_reached?
+    end
   end
 
   #
@@ -40,10 +61,6 @@ class SocialBlast
     raise ArgumentError, 'cannot be empty' if message.blank?
     @message = message
     @services = []
-  end
-
-  def on?
-    self.class.on?
   end
 
   def add_service(service)
@@ -58,15 +75,11 @@ class SocialBlast
     end
   end
 
-  def post_count
-    @post_count ||= Counter.new
-  end
-
   def deliver
     if SocialBlast.on
-      raise PostThresholdException if threshold_reached?
+      raise PostThresholdException if SocialBlast.threshold_reached?
       @services.each { |s| s.deliver }
-      self.post_count.increment
+      SocialBlast.increment_post_count
     else
       raise PostingDisabledException
     end
@@ -74,22 +87,6 @@ class SocialBlast
 
   def delivering_to
     @services.collect { |s| s.service_name }
-  end
-
-  def threshold=(v)
-    @threshold = v
-  end
-
-  def threshold
-    @threshold ||= self.class.threshold
-  end
-
-  def threshold_reached?
-    post_count.value >= self.threshold
-  end
-
-  def can_post?
-    on? and not threshold_reached?
   end
 
   #
@@ -105,16 +102,12 @@ class SocialBlast
     self::Services.constants.select { |c| self::Services.const_get(c).class == Class }
   end
 
-  def services_available
-    self.class.services_available
-  end
-
   def have_service?(service)
-    services_available.include?(service)
+    SocialBlast.services_available.include?(service)
   end
 
   def service_class(service)
-    if services_available.include?(service)
+    if SocialBlast.services_available.include?(service)
       self.class::Services.const_get(service)
     end
   end

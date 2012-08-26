@@ -45,10 +45,15 @@ class Counter
     else
       set_val('counter', self.value + 1)
     end
+    get_val 'counter'
   end
 
   def to_s
     self.value.to_s
+  end
+
+  def to_i
+    self.value.to_i
   end
 
   #
@@ -56,7 +61,7 @@ class Counter
   private
 
   def minute_difference
-    diff = (Time.now - self.timestamp) * 60
+    diff = (Time.now - self.timestamp) / 60
     diff.to_i
   end
 

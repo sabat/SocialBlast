@@ -44,25 +44,23 @@ describe SocialBlast do
     subject(:blast) { SocialBlast.new('test msg') }
     before { mock_twitter }
 
-    its(:on?) { should be_true }
     its(:message) { should_not be_empty }
-
     it { should be_kind_of(ShmStore) }
 
     it "says it can't post if it is not on" do
       SocialBlast.on = false
-      blast.stub(:threshold_reached?).and_return(false)
-      expect(blast.can_post?).to be_false
+      SocialBlast.stub(:threshold_reached?).and_return(false)
+      expect(SocialBlast.can_post?).to be_false
     end
 
     it "says it can't post if posting threshold is reached" do
-      blast.stub(:threshold_reached?).and_return(true)
-      expect(blast.can_post?).to be_false
+      SocialBlast.stub(:threshold_reached?).and_return(true)
+      expect(SocialBlast.can_post?).to be_false
     end
 
     it "says it can post if on and below posting threshold" do
-      blast.stub(:threshold_reached?).and_return(false)
-      expect(blast.can_post?).to be_true
+      SocialBlast.stub(:threshold_reached?).and_return(false)
+      expect(SocialBlast.can_post?).to be_true
     end
 
     it "does not deliver the payload if the 'on' switch isn't set" do
@@ -82,7 +80,7 @@ describe SocialBlast do
     end
 
     it "cannot be configured to deliver to an unknown service" do
-      blast.add_service(:Plurk).should be_false
+      blast.add_service(:PlurkService).should be_false
     end
 
     it "can be configured to remove a service from delivery" do
@@ -116,7 +114,7 @@ describe SocialBlast do
       SocialBlast.any_instance.stub(:have_service?).with(:TwitterService).and_return(true)
       SocialBlast.any_instance.stub(:configured?).with(:TwitterService).and_return(true)
       SocialBlast::Services::TwitterService.stub(:new).with(blast.message).and_return(mock_twitter)
-      blast.post_count.reset
+      SocialBlast.reset_post_count
       blast.add_service(:TwitterService)
     end
 
@@ -124,45 +122,43 @@ describe SocialBlast do
       SocialBlast.threshold.should be_a_kind_of(Fixnum)
     end
 
-    it "can have its threshold set at the class level" do
+    it "can have its threshold set" do
       SocialBlast.threshold = 3
       SocialBlast.threshold.should eq(3)
     end
 
     it "keeps track of posts per hour" do
       prep_successful_blast
-      blast.deliver
-      blast.post_count.value.should eq(1)
-      blast.deliver
-      blast.post_count.value.should eq(2)
+      expect { blast.deliver }.to change { SocialBlast.post_counter.value }.to(1)
+      expect { blast.deliver }.to change { SocialBlast.post_counter.value }.to(2)
     end
 
     it "allows the posts-per-hour threshold to be set" do
-      blast.class.threshold = 42
-      expect(blast.class.threshold).to eq(42)
+      SocialBlast.threshold = 42
+      expect(SocialBlast.threshold).to eq(42)
     end
 
     it "reports if the post threshold has been reached" do
-      blast.post_count.value = 246
-      blast.threshold_reached?.should be_true
+      SocialBlast.post_counter.value = 246
+      SocialBlast.threshold_reached?.should be_true
     end
 
     it "reports if the post threshold has not been reached" do
-      blast.post_count.value = 0
-      blast.threshold_reached?.should be_false
+      SocialBlast.post_counter.value = 0
+      SocialBlast.threshold_reached?.should be_false
     end
 
     it "resets the post count after one hour" do
-      blast.post_count.value = blast.threshold
-      blast.post_count.timestamp = (Time.now - (60*60*2))
-      blast.post_count.increment
+      SocialBlast.post_counter.value = SocialBlast.threshold
+      SocialBlast.post_counter.timestamp = (Time.now - (60*60*2))
+      SocialBlast.post_counter.increment
 
-      blast.post_count.value.should eq(0)
+      SocialBlast.post_counter.value.should eq(0)
     end
 
     it "will not post if the threshold has been reached" do
       prep_successful_blast
-      blast.post_count.value = blast.threshold + 1
+      SocialBlast.post_counter.value = SocialBlast.threshold + 1
 
       expect { blast.deliver }.to raise_error(PostThresholdException)
     end
