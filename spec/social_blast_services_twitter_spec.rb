@@ -1,36 +1,51 @@
 require 'spec_helper'
 
-describe SocialBlast::Services::Twitter do
-  subject { SocialBlast::Services::Twitter }
+describe SocialBlast::Services::TwitterService do
+  let(:valid_config) do
+    SocialBlast.configure do |c|
+      c.twitter_consumer_key = '7wehnkjfhsd'
+      c.twitter_consumer_secret = 'sdflkh'
+      c.twitter_oauth_token = 's987yhksdjf8234h2n'
+      c.twitter_oauth_token_secret = 's098uhnnerf9fussdfs3'
+    end
+  end
+  subject { SocialBlast::Services::TwitterService }
 
-  its(:service_name) { should eq(:Twitter) }
-  its(:configure) { should be_kind_of(Hashie::Mash) }
+  its(:service_name) { should eq(:TwitterService) }
 
   context "when configured" do
-    SocialBlast::Services::Twitter.configure do |c|
-      c.consumer_key = '7wehnkjfhsd'
-      c.consumer_secret = 'sdflkh'
-      c.oauth_token = 's987yhksdjf8234h2n'
-      c.oauth_token_secret = 's098uhnnerf9fussdfs3'
-    end
-
+    before { valid_config }
     its(:configured?) { should be_true }
   end
 
   context "when not configured" do
-    SocialBlast::Services::Twitter.configure { |c| c.username = nil, c.api_key = nil }
+    before do
+      SocialBlast.configure { |c| c.twitter_consumer_secret = nil }
+    end
     its(:configured?) { should_not be_true }
   end
 
   context "when initialized" do
-    subject { SocialBlast::Services::Twitter.new('a message') }
-    its(:service_name) { should eq(:Twitter) }
+    before { valid_config }
+    subject { SocialBlast::Services::TwitterService.new('a message') }
+
     its(:message) { should_not be_blank }
   end
 
   context "when delivering" do
-    it "returns true if successful"
-    it "raises an exception if not successful"
+    let(:tweet) { mock(Twitter::Tweet) }
+    before { valid_config }
+    subject(:twitter_instance) { SocialBlast::Services::TwitterService.new('a message') }
+
+    it "returns true if successful" do
+      Twitter::Client.any_instance.should_receive(:update)
+      twitter_instance.deliver #.should be
+    end
+
+    it "raises an exception if not successful" do
+      Twitter::Client.any_instance.should_receive(:update).and_raise(Twitter::Error)
+      expect { twitter_instance.deliver }.to raise_error(DeliveryException)
+    end
   end
 end
 

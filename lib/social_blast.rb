@@ -16,20 +16,22 @@ class SocialBlast
 
   DEFAULT_THRESHOLD = 3
 
-  def self.on=(v)
-    set_val('on', v)
-  end
-
-  def self.on?
-    self.on
-  end
-
-  def self.threshold=(v)
-    @threshold = v
-  end
-
-  def self.threshold
-    @threshold ||= ( config.threshold || DEFAULT_THRESHOLD )
+  class << self
+    def on=(v)
+      set_val('on', v)
+    end
+  
+    def on?
+      self.on
+    end
+  
+    def threshold=(v)
+      @threshold = v
+    end
+  
+    def threshold
+      @threshold ||= ( config.threshold || DEFAULT_THRESHOLD )
+    end
   end
 
   #

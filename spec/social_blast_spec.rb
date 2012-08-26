@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'social_blast'
 
 describe SocialBlast do
-  before { SocialBlast::Services.stub(:constants).and_return([:Twitter]) }
+  before { SocialBlast::Services.stub(:constants).and_return([:TwitterService]) }
   subject { SocialBlast }
   after { SocialBlast.on = true }
 
@@ -19,7 +19,7 @@ describe SocialBlast do
     expect(SocialBlast.on?).to be_false
   end
 
-  its(:services_available) { should include(:Twitter) }
+  its(:services_available) { should include(:TwitterService) }
 
   context "when initializing" do
     subject { SocialBlast.new('test msg') }
@@ -31,14 +31,14 @@ describe SocialBlast do
   end
 
   context "when initialized" do
-    let(:mock_twitter) { mock SocialBlast::Services::Twitter }
+    let(:mock_twitter) { mock SocialBlast::Services::TwitterService }
     let(:prep_successful_blast) do
-      mock_twitter.stub(:service_name).and_return(:Twitter)
+      mock_twitter.stub(:service_name).and_return(:TwitterService)
       mock_twitter.stub(:deliver).and_return(true)
-      SocialBlast.any_instance.stub(:have_service?).with(:Twitter).and_return(true)
-      SocialBlast.any_instance.stub(:configured?).with(:Twitter).and_return(true)
-      SocialBlast::Services::Twitter.stub(:new).with(blast.message).and_return(mock_twitter)
-      blast.add_service(:Twitter)
+      SocialBlast.any_instance.stub(:have_service?).with(:TwitterService).and_return(true)
+      SocialBlast.any_instance.stub(:configured?).with(:TwitterService).and_return(true)
+      SocialBlast::Services::TwitterService.stub(:new).with(blast.message).and_return(mock_twitter)
+      blast.add_service(:TwitterService)
     end
 
     subject(:blast) { SocialBlast.new('test msg') }
@@ -72,13 +72,13 @@ describe SocialBlast do
 
     it "can be configured to deliver to a service it knows" do
       prep_successful_blast
-      blast.add_service(:Twitter).should be_true
-      blast.delivering_to.should include(:Twitter)
+      blast.add_service(:TwitterService).should be_true
+      blast.delivering_to.should include(:TwitterService)
     end
 
     it "cannot be configured to deliver to an unconfigured service" do
-      SocialBlast::Services::Twitter.should_receive(:configured?).and_return(false)
-      blast.add_service(:Twitter).should be_false
+      SocialBlast::Services::TwitterService.should_receive(:configured?).and_return(false)
+      blast.add_service(:TwitterService).should be_false
     end
 
     it "cannot be configured to deliver to an unknown service" do
@@ -88,8 +88,8 @@ describe SocialBlast do
     it "can be configured to remove a service from delivery" do
       prep_successful_blast
 
-      blast.remove_service(:Twitter).should be
-      blast.delivering_to.should_not include(:Twitter)
+      blast.remove_service(:TwitterService).should be
+      blast.delivering_to.should_not include(:TwitterService)
     end
 
     it "delivers the payload to Twitter if configured" do
@@ -106,18 +106,18 @@ describe SocialBlast do
   end
 
   context "when posting" do
-    let(:mock_twitter) { mock SocialBlast::Services::Twitter }
+    let(:mock_twitter) { mock SocialBlast::Services::TwitterService }
     before { mock_twitter }
     subject(:blast) { SocialBlast.new('test msg') }
 
     let(:prep_successful_blast) do
-      mock_twitter.stub(:service_name).and_return(:Twitter)
+      mock_twitter.stub(:service_name).and_return(:TwitterService)
       mock_twitter.stub(:deliver).and_return(true)
-      SocialBlast.any_instance.stub(:have_service?).with(:Twitter).and_return(true)
-      SocialBlast.any_instance.stub(:configured?).with(:Twitter).and_return(true)
-      SocialBlast::Services::Twitter.stub(:new).with(blast.message).and_return(mock_twitter)
+      SocialBlast.any_instance.stub(:have_service?).with(:TwitterService).and_return(true)
+      SocialBlast.any_instance.stub(:configured?).with(:TwitterService).and_return(true)
+      SocialBlast::Services::TwitterService.stub(:new).with(blast.message).and_return(mock_twitter)
       blast.post_count.reset
-      blast.add_service(:Twitter)
+      blast.add_service(:TwitterService)
     end
 
     it "can report its threshold" do

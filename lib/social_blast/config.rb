@@ -8,6 +8,7 @@ class SocialBlast
       yield self.configuration if block_given?
       self.configuration
     end
+
     alias :config :configure
   end
 
