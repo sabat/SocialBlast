@@ -42,7 +42,6 @@ class SocialBlast
     end
 
     def increment_post_count
-#true;debugger
       post_counter.increment
     end
 
