@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Counter do
+describe TimedCounter do
   it "can be initialized" do
-    expect { Counter.new }.to_not raise_error
+    expect { TimedCounter.new }.to_not raise_error
   end
 
   context "when initialized" do
-    subject(:counter) { Counter.new }
+    subject(:counter) { TimedCounter.new }
 
     its(:value) { should be_zero }
     its(:timestamp) { should be_kind_of(Time) }
