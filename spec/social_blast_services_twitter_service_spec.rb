@@ -37,9 +37,9 @@ describe SocialBlast::Services::TwitterService do
     before { valid_config }
     subject(:twitter_instance) { SocialBlast::Services::TwitterService.new('a message') }
 
-    it "returns true if successful" do
+    it "returns without error if successful" do
       Twitter::Client.any_instance.should_receive(:update)
-      twitter_instance.deliver #.should be
+      expect { twitter_instance.deliver }.to_not raise_error
     end
 
     it "raises an exception if not successful" do

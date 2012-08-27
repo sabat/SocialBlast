@@ -45,11 +45,22 @@ class SocialBlast
 
       private
 
-      def twitter_client
-        @twitter_client ||= Twitter::Client.new
+      def app_config
+        service_name = self.class.service_name.to_s.sub(/Service$/, '').downcase
+        config = SocialBlast.config.select { |k| k.to_s.match(/#{service_name}_/) }
+        Hash[
+          config.collect do |k,v|
+            k = (k.to_s.sub(/^#{service_name}_/, '')).to_sym
+            [k,v]
+          end
+        ]
       end
-    end
 
+      def twitter_client
+        @twitter_client ||= Twitter::Client.new(app_config)
+      end
+
+    end
   end
 end
 
