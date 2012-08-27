@@ -3,7 +3,7 @@ require 'social_blast/version'
 require 'social_blast/shm_store'
 require 'social_blast/object'
 require 'social_blast/config'
-require 'social_blast/counter'
+require 'social_blast/timed_counter'
 require 'social_blast/exceptions'
 require 'social_blast/services'
 require 'social_blast/string'
@@ -34,7 +34,7 @@ class SocialBlast
     end
 
     def post_counter
-      @post_counter ||= Counter.new
+      @post_counter ||= TimedCounter.new
     end
 
     def reset_post_count
