@@ -1,4 +1,4 @@
-= social_blast
+= social_blast [![Build Status](https://secure.travis-ci.org/colszowka/simplecov.png)][Continuous Integration]
 
 * {Homepage}[https://github.com/sabat/social_blast#readme]
 * {Issues}[https://github.com/sabat/social_blast/issues]

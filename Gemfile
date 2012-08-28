@@ -5,6 +5,8 @@ group :development, :test do
   gem 'debugger'
 end
 
+gem 'simplecov', require: false, group: :test
+
 gem 'hashie'
 gem 'json'
 gem 'twitter'
