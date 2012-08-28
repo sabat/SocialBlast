@@ -1,0 +1,1 @@
+- change config style from twitter_foo_bar => 1 to [:twitter] => { foo_bar: 1 }

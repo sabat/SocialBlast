@@ -30,6 +30,7 @@ describe SocialBlast::Services::TwitterService do
     subject { SocialBlast::Services::TwitterService.new('a message') }
 
     its(:message) { should_not be_blank }
+    its(:short_name) { should eq('twitter') }
   end
 
   context "when delivering" do

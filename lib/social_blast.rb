@@ -6,7 +6,6 @@ require 'social_blast/config'
 require 'social_blast/timed_counter'
 require 'social_blast/exceptions'
 require 'social_blast/services'
-require 'social_blast/string'
 
 class SocialBlast
   extend ShmStore
@@ -52,6 +51,10 @@ class SocialBlast
     def can_post?
       on? and not threshold_reached?
     end
+
+    def services_available
+      self::Services.services_available
+    end
   end
 
   #
@@ -95,10 +98,6 @@ class SocialBlast
   def self.on
     on = get_val('on')
     (on.nil? || on) ? true : false
-  end
-
-  def self.services_available
-    self::Services.constants.select { |c| self::Services.const_get(c).class == Class }
   end
 
   def have_service?(service)

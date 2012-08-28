@@ -1,7 +1,9 @@
 require 'hashie'
 
 class SocialBlast
-  class Configuration < Hashie::Mash; end
+  class Configuration < Hashie::Mash
+
+  end
 
   class << self
     def configure

@@ -2,7 +2,7 @@ require 'twitter'
 require 'twitter/error'
 
 class SocialBlast
-  module Services
+  class Services
 
     class TwitterService
       attr_reader :message
@@ -41,13 +41,20 @@ class SocialBlast
         end
       end
 
+      def short_name
+        @short_name ||= self.class.service_name.to_s.sub(/Service$/, '').downcase
+      end
+
+      def service_name
+        self.class.service_name
+      end
+
       #
 
       private
 
       def app_config
-        service_name = self.class.service_name.to_s.sub(/Service$/, '').downcase
-        config = SocialBlast.config.select { |k| k.to_s.match(/#{service_name}_/) }
+        config = SocialBlast.config.select { |k| k.to_s.match(/#{short_name}_/) }
         Hash[
           config.collect do |k,v|
             k = (k.to_s.sub(/^#{service_name}_/, '')).to_sym

@@ -49,7 +49,7 @@ describe TimedCounter do
     end
 
     its(:to_s) { should eq('0') }
-
+    its(:to_i) { should eq(0) }
   end
 end
 

@@ -1,8 +1,12 @@
 require 'simplecov'
-SimpleCov.start
-
 require 'rspec'
 require 'debugger'
-require 'social_blast'
 require 'twitter'
+
+SimpleCov.start
+require 'social_blast'
+
+RSpec.configure do |config|
+  config.before(:suite) { $VERBOSE=nil }
+end
 
