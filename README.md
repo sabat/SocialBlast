@@ -1,4 +1,6 @@
-SocialBlast [![Build Status](https://secure.travis-ci.org/colszowka/simplecov.png)][Continuous Integration]
+SocialBlast ![Build Status](https://secure.travis-ci.org/sabat/simplecov.png)
+=========
+** blast messages to multiple social services
 
 [Homepage]: https://github.com/sabat/social_blast#readme
 [Issues]: https://github.com/sabat/social_blast/issues
