@@ -1,4 +1,4 @@
-SocialBlast [![Build Status](https://secure.travis-ci.org/sabat/simplecov.png)]
+SocialBlast [![Build Status](https://secure.travis-ci.org/sabat/SocialBlast.png)][Continuous Integration]
 =========
 **blast messages to multiple social services**
 
