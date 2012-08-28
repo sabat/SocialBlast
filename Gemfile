@@ -9,6 +9,7 @@ gem 'simplecov', require: false, group: :test
 
 gem 'hashie'
 gem 'json'
+gem 'rake'
 gem 'twitter'
 
 # gem 'google_plus'

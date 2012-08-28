@@ -1,10 +1,10 @@
-SocialBlast ![Build Status](https://secure.travis-ci.org/sabat/simplecov.png)
+SocialBlast [![Build Status](https://secure.travis-ci.org/sabat/simplecov.png)]
 =========
-** blast messages to multiple social services
+**blast messages to multiple social services**
 
 [Homepage]: https://github.com/sabat/social_blast#readme
 [Issues]: https://github.com/sabat/social_blast/issues
-Documentation]: http://rubydoc.info/gems/social_blast/frames
+[Documentation]: http://rubydoc.info/gems/social_blast/frames
 
 TODO: Description
 
