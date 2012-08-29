@@ -4,34 +4,21 @@ require 'twitter/error'
 class SocialBlast
   class Services
 
-    class TwitterService
+    class TwitterService < SocialBlast::BaseService
       attr_reader :message
 
       SERVICE_AUTH_KEYWORDS = %w[
-          twitter_consumer_key
-          twitter_consumer_secret
-          twitter_oauth_token
-          twitter_oauth_token_secret
+          consumer_key
+          consumer_secret
+          oauth_token
+          oauth_token_secret
       ]
 
-      def self.service_name
-        self.name.split(/::/).last.to_sym
-      end
-
-      def self.configured?
-        SERVICE_AUTH_KEYWORDS.all? do |k|
-          SocialBlast.configure[k].present? &&
-          SocialBlast.configure[k].kind_of?(String)
-        end
+      def self.service_auth_keywords
+        SERVICE_AUTH_KEYWORDS
       end
 
       #
-
-      def initialize(message)
-        raise NotConfiguredException unless self.class.configured?
-        raise ArgumentError, 'cannot be nil or empty' if !message.present?
-        @message = message
-      end
 
       def deliver
         begin
@@ -41,27 +28,9 @@ class SocialBlast
         end
       end
 
-      def short_name
-        @short_name ||= self.class.service_name.to_s.sub(/Service$/, '').downcase
-      end
-
-      def service_name
-        self.class.service_name
-      end
-
       #
 
       private
-
-      def app_config
-        config = SocialBlast.config.select { |k| k.to_s.match(/#{short_name}_/) }
-        Hash[
-          config.collect do |k,v|
-            k = (k.to_s.sub(/^#{service_name}_/, '')).to_sym
-            [k,v]
-          end
-        ]
-      end
 
       def twitter_client
         @twitter_client ||= Twitter::Client.new(app_config)

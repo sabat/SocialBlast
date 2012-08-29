@@ -2,7 +2,7 @@ require 'spec_helper'
 
 class ShmStoreDummyClass; end
 
-describe ShmStoreDummyClass do
+describe 'ShmStore' do
   let(:set_rails_env) do
     Kernel.stub(:const_defined?).with('Rails').and_return(true)
     Rails = double('Rails')

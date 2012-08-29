@@ -1,9 +1,8 @@
 require 'hashie'
+require 'social_blast/services'
 
 class SocialBlast
-  class Configuration < Hashie::Mash
-
-  end
+  class Configuration < Hashie::Mash; end
 
   class << self
     def configure
@@ -17,7 +16,13 @@ class SocialBlast
   private
 
   def self.configuration
-    @configuration ||= Configuration.new
+    @configuration ||= begin
+      c = Configuration.new
+      SocialBlast::Services.services_available(:short).each do |s|
+        c[s] = Hashie::Mash.new
+      end
+      c
+    end
   end
 end
 
