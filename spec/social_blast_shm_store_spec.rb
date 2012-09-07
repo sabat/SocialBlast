@@ -31,7 +31,7 @@ describe 'ShmStore' do
   context "set_val" do
     it "sets a value using the Rails cache under Rails" do
       set_rails_env
-      Rails.should_receive(:write).with('foo', 99).and_return(99)
+      Rails.should_receive(:write).with('foo', 99).and_return(true)
       dummy_class.set_val('foo', 99).should eq(99)
     end
 
