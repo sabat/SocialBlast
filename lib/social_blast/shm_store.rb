@@ -6,6 +6,7 @@ module ShmStore
     else
       instance_variable_set("@#{name}".to_sym, val)
     end
+    val
   end
 
   def get_val(name)

@@ -23,7 +23,7 @@
       <img src="./assets/0.5.3/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2012-08-29T19:14:27-07:00">2012-08-29T19:14:27-07:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2012-09-07T11:12:39-07:00">2012-09-07T11:12:39-07:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -34,15 +34,15 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         6.52
+         6.78
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>14</b> files in total.
-    <b>416</b> relevant lines. 
-    <span class="green"><b>416</b> lines covered</span> and
+    <b>418</b> relevant lines. 
+    <span class="green"><b>418</b> lines covered</span> and
     <span class="red"><b>0</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -132,11 +132,11 @@
       <tr>
         <td class="strong"><a href="#89f7b29fd2156041744e62f53abed3a013a54047" class="src_link" title="lib/social_blast/shm_store.rb">lib/social_blast/shm_store.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>24</td>
-        <td>11</td>
-        <td>11</td>
+        <td>25</td>
+        <td>12</td>
+        <td>12</td>
         <td>0</td>
-        <td>34.1</td>
+        <td>37.5</td>
       </tr>
       
       <tr>
@@ -146,7 +146,7 @@
         <td>38</td>
         <td>38</td>
         <td>0</td>
-        <td>4.8</td>
+        <td>4.9</td>
       </tr>
       
       <tr>
@@ -192,11 +192,11 @@
       <tr>
         <td class="strong"><a href="#0a5d482bce7a706cd7c946a9277fc9540217ce70" class="src_link" title="spec/timed_counter_spec.rb">spec/timed_counter_spec.rb</a></td>
         <td class="green strong">100.0 %</td>
-        <td>55</td>
-        <td>32</td>
-        <td>32</td>
+        <td>57</td>
+        <td>33</td>
+        <td>33</td>
         <td>0</td>
-        <td>1.8</td>
+        <td>1.9</td>
       </tr>
       
     </tbody>
@@ -2020,8 +2020,8 @@
     <h3>lib/social_blast/shm_store.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>11</b> relevant lines. 
-      <span class="green"><b>11</b> lines covered</span> and
+      <b>12</b> relevant lines. 
+      <span class="green"><b>12</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -2047,8 +2047,8 @@
           <code class="ruby">  def set_val(name, val)</code>
         </li>
       
-        <li class="covered" data-hits="67" data-linenumber="4">
-          <span class="hits">67</span>
+        <li class="covered" data-hits="69" data-linenumber="4">
+          <span class="hits">69</span>
           
           <code class="ruby">    if rails?</code>
         </li>
@@ -2065,8 +2065,8 @@
           <code class="ruby">    else</code>
         </li>
       
-        <li class="covered" data-hits="66" data-linenumber="7">
-          <span class="hits">66</span>
+        <li class="covered" data-hits="68" data-linenumber="7">
+          <span class="hits">68</span>
           
           <code class="ruby">      instance_variable_set(&quot;@#{name}&quot;.to_sym, val)</code>
         </li>
@@ -2077,97 +2077,103 @@
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="9">
+        <li class="covered" data-hits="69" data-linenumber="9">
+          <span class="hits">69</span>
           
-          
-          <code class="ruby">  end</code>
+          <code class="ruby">    val</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="10">
           
           
+          <code class="ruby">  end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="11">
+          
+          
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="11">
+        <li class="covered" data-hits="1" data-linenumber="12">
           <span class="hits">1</span>
           
           <code class="ruby">  def get_val(name)</code>
         </li>
       
-        <li class="covered" data-hits="56" data-linenumber="12">
+        <li class="covered" data-hits="56" data-linenumber="13">
           <span class="hits">56</span>
           
           <code class="ruby">    if rails?</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="13">
+        <li class="covered" data-hits="1" data-linenumber="14">
           <span class="hits">1</span>
           
           <code class="ruby">      Rails.cache.fetch(name)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="14">
+        <li class="never" data-hits="" data-linenumber="15">
           
           
           <code class="ruby">    else</code>
         </li>
       
-        <li class="covered" data-hits="55" data-linenumber="15">
+        <li class="covered" data-hits="55" data-linenumber="16">
           <span class="hits">55</span>
           
           <code class="ruby">      instance_variable_get(&quot;@#{name}&quot;.to_sym)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="16">
+        <li class="never" data-hits="" data-linenumber="17">
           
           
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="17">
+        <li class="never" data-hits="" data-linenumber="18">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="18">
+        <li class="never" data-hits="" data-linenumber="19">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="19">
+        <li class="covered" data-hits="1" data-linenumber="20">
           <span class="hits">1</span>
           
           <code class="ruby">  def rails?</code>
         </li>
       
-        <li class="covered" data-hits="125" data-linenumber="20">
-          <span class="hits">125</span>
+        <li class="covered" data-hits="127" data-linenumber="21">
+          <span class="hits">127</span>
           
           <code class="ruby">    Kernel.const_defined?('Rails')</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="21">
-          
-          
-          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="22">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">  end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="23">
           
           
-          <code class="ruby">end</code>
+          <code class="ruby"></code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="24">
+          
+          
+          <code class="ruby">end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="25">
           
           
           <code class="ruby"></code>
@@ -2227,14 +2233,14 @@
           <code class="ruby">  def reset</code>
         </li>
       
-        <li class="covered" data-hits="12" data-linenumber="7">
-          <span class="hits">12</span>
+        <li class="covered" data-hits="13" data-linenumber="7">
+          <span class="hits">13</span>
           
           <code class="ruby">    set_val('timestamp', Time.now)</code>
         </li>
       
-        <li class="covered" data-hits="12" data-linenumber="8">
-          <span class="hits">12</span>
+        <li class="covered" data-hits="13" data-linenumber="8">
+          <span class="hits">13</span>
           
           <code class="ruby">    set_val('counter', 0) </code>
         </li>
@@ -4582,8 +4588,8 @@
     <h3>spec/timed_counter_spec.rb</h3>
     <h4><span class="green">100.0 %</span> covered</h4>
     <div>
-      <b>32</b> relevant lines. 
-      <span class="green"><b>32</b> lines covered</span> and
+      <b>33</b> relevant lines. 
+      <span class="green"><b>33</b> lines covered</span> and
       <span class="red"><b>0</b> lines missed.</span>
     </div>
   </div>
@@ -4639,8 +4645,8 @@
           <code class="ruby">  context &quot;when initialized&quot; do</code>
         </li>
       
-        <li class="covered" data-hits="13" data-linenumber="9">
-          <span class="hits">13</span>
+        <li class="covered" data-hits="14" data-linenumber="9">
+          <span class="hits">14</span>
           
           <code class="ruby">    subject(:counter) { TimedCounter.new }</code>
         </li>
@@ -4855,67 +4861,79 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="45">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="45">
+          <span class="hits">2</span>
           
-          <code class="ruby">    it &quot;resets itself after &lt;interval&gt; minutes&quot; do</code>
+          <code class="ruby">    its(:reset) { should eq(0) }</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="46">
-          <span class="hits">1</span>
-          
-          <code class="ruby">      counter.timestamp = Time.now - (60*120) # &gt; 1.hour.ago</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="47">
-          <span class="hits">1</span>
-          
-          <code class="ruby">      counter.value = 5</code>
-        </li>
-      
-        <li class="covered" data-hits="4" data-linenumber="48">
-          <span class="hits">4</span>
-          
-          <code class="ruby">      expect { counter.increment }.to change { counter.value }.to(0)</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="49">
-          
-          
-          <code class="ruby">    end</code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="50">
+        <li class="never" data-hits="" data-linenumber="46">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="51">
+        <li class="covered" data-hits="1" data-linenumber="47">
+          <span class="hits">1</span>
+          
+          <code class="ruby">    it &quot;resets itself after &lt;interval&gt; minutes&quot; do</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="48">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      counter.timestamp = Time.now - (60*120) # &gt; 1.hour.ago</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="49">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      counter.value = 5</code>
+        </li>
+      
+        <li class="covered" data-hits="4" data-linenumber="50">
+          <span class="hits">4</span>
+          
+          <code class="ruby">      expect { counter.increment }.to change { counter.value }.to(0)</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="51">
+          
+          
+          <code class="ruby">    end</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="52">
+          
+          
+          <code class="ruby"></code>
+        </li>
+      
+        <li class="covered" data-hits="2" data-linenumber="53">
           <span class="hits">2</span>
           
           <code class="ruby">    its(:to_s) { should eq('0') }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="52">
+        <li class="covered" data-hits="2" data-linenumber="54">
           <span class="hits">2</span>
           
           <code class="ruby">    its(:to_i) { should eq(0) }</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="53">
+        <li class="never" data-hits="" data-linenumber="55">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="54">
+        <li class="never" data-hits="" data-linenumber="56">
           
           
           <code class="ruby">end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="55">
+        <li class="never" data-hits="" data-linenumber="57">
           
           
           <code class="ruby"></code>
