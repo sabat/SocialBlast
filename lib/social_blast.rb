@@ -1,4 +1,3 @@
-require 'debugger'
 require 'social_blast/version'
 require 'social_blast/shm_store'
 require 'social_blast/object'
@@ -80,7 +79,7 @@ class SocialBlast
   def deliver
     if SocialBlast.on
       raise PostThresholdException if SocialBlast.threshold_reached?
-      @services.each { |s| s.deliver }
+      @services.each(&:deliver)
       SocialBlast.increment_post_count
     else
       raise PostingDisabledException
@@ -89,6 +88,13 @@ class SocialBlast
 
   def delivering_to
     @services.collect { |s| s.service_name }
+  end
+
+  def all_services
+    self.class::Services.services_available(:configured).each do |s|
+      self.add_service s
+    end
+    self
   end
 
   #

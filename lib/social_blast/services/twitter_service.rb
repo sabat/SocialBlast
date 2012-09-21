@@ -33,6 +33,8 @@ class SocialBlast
       private
 
       def twitter_client
+        https_proxy = ENV['HTTPS_PROXY'] || ENV['https_proxy']
+        Twitter.connection_options[:proxy] = https_proxy
         @twitter_client ||= Twitter::Client.new(app_config)
       end
 

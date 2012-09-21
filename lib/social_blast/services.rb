@@ -11,7 +11,13 @@ class SocialBlast
   class Services
     def self.services_available(opt=nil)
       services = self.constants.select { |c| self.const_get(c).class == Class }
-      opt == :short ? services.collect { |s| const_get(s).short_name_sym } : services
+      if opt == :short
+        services.collect { |s| const_get(s).short_name_sym }
+      elsif opt == :configured
+        services.select { |c| self.const_get(c).configured? }
+      else
+       services
+      end
     end
   end
 end
