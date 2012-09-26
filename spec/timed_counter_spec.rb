@@ -46,8 +46,9 @@ describe TimedCounter do
 
     it "resets itself after <interval> minutes" do
       counter.timestamp = Time.now - (60*120) # > 1.hour.ago
-      counter.value = 5
-      expect { counter.increment }.to change { counter.value }.to(0)
+      counter.value = 51
+
+      expect { counter.increment }.to change { counter.value }.to(1)
     end
 
     its(:to_s) { should eq('0') }

@@ -4,7 +4,7 @@ class TimedCounter
   DEFAULT_INTERVAL = 60 # minutes
 
   def reset
-    set_val('timestamp', Time.now)
+    set_timestamp
     set_val('counter', 0) 
   end
 
@@ -13,6 +13,7 @@ class TimedCounter
   end
 
   def value
+    reset if interval_expired?
     val = get_val('counter')
     val.nil? ? reset : val
   end
@@ -24,8 +25,7 @@ class TimedCounter
   def timestamp
     val = get_val('timestamp')
     if val.nil?
-      reset
-      get_val('timestamp')
+      set_timestamp
     else
       val
     end
@@ -40,12 +40,7 @@ class TimedCounter
   end
 
   def increment
-    if interval_expired?
-      reset
-    else
-      set_val('counter', self.value + 1)
-    end
-    get_val 'counter'
+    set_val('counter', self.value + 1)
   end
 
   def to_s
@@ -69,5 +64,8 @@ class TimedCounter
     minute_difference > self.interval
   end
 
+  def set_timestamp
+    set_val('timestamp', Time.now)
+  end
 end
 

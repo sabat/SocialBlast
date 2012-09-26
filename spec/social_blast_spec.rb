@@ -153,7 +153,7 @@ describe SocialBlast do
       SocialBlast.post_counter.timestamp = (Time.now - (60*60*2))
       SocialBlast.post_counter.increment
 
-      SocialBlast.post_counter.value.should eq(0)
+      SocialBlast.post_counter.value.should eq(1)
     end
 
     it "will not post if the threshold has been reached" do
