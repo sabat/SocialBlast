@@ -48,7 +48,7 @@ class SocialBlast
     end
 
     def can_post?
-      on? and not threshold_reached?
+      on? and !threshold_reached?
     end
 
     def services_available
