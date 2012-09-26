@@ -39,6 +39,10 @@ class TimedCounter
     @interval || DEFAULT_INTERVAL
   end
 
+  def interval_minutes
+    interval * 60
+  end
+
   def increment
     set_val('counter', self.value + 1)
   end

@@ -162,6 +162,14 @@ describe SocialBlast do
 
       expect { blast.deliver }.to raise_error(PostThresholdException)
     end
+
+    it "reports the timestamp of when the threshold will reset" do
+      prep_successful_blast
+      SocialBlast.post_counter.value = SocialBlast.threshold + 1
+
+      expect(SocialBlast.when_can_post).to be_kind_of(String)
+      expect(SocialBlast.when_can_post).to_not be_empty
+    end
   end
 
 end

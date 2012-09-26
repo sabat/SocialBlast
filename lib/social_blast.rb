@@ -51,6 +51,15 @@ class SocialBlast
       on? and !threshold_reached?
     end
 
+    def when_can_post
+      t = if threshold_reached?
+        post_counter.timestamp + post_counter.interval_minutes
+      else
+        Time.now
+      end
+      t.to_s
+    end
+
     def services_available
       self::Services.services_available
     end
