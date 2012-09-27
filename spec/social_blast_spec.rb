@@ -38,14 +38,19 @@ describe SocialBlast do
       SocialBlast.any_instance.stub(:have_service?).with(:TwitterService).and_return(true)
       SocialBlast.any_instance.stub(:configured?).with(:TwitterService).and_return(true)
       SocialBlast::Services::TwitterService.stub(:new).with(blast.message).and_return(mock_twitter)
-      blast.add_service(:TwitterService)
     end
 
     subject(:blast) { SocialBlast.new('test msg') }
     before { mock_twitter }
 
-    its(:message) { should_not be_empty }
     it { should be_kind_of(ShmStore) }
+    its(:message) { should_not be_empty }
+
+    it "can auto-add all available services" do
+      prep_successful_blast
+      blast.all_services
+      blast.delivering_to.should eq [:TwitterService]
+    end
 
     it "says it can't post if it is not on" do
       SocialBlast.on = false
@@ -118,6 +123,10 @@ describe SocialBlast do
       blast.add_service(:TwitterService)
     end
 
+    let!(:time_now) { Time.now }
+
+    #
+
     it "can report its threshold" do
       SocialBlast.threshold.should be_a_kind_of(Fixnum)
     end
@@ -169,6 +178,13 @@ describe SocialBlast do
 
       expect(SocialBlast.when_can_post).to be_kind_of(String)
       expect(SocialBlast.when_can_post).to_not be_empty
+    end
+
+    it "reports the current time if we have not reached the posting threshold" do
+      prep_successful_blast
+      SocialBlast.post_counter.value = SocialBlast.threshold  - 1
+      Time.stub(:now).and_return(time_now)
+      expect(SocialBlast.when_can_post).to eq time_now.to_s
     end
   end
 
