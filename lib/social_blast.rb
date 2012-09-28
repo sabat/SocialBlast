@@ -74,7 +74,6 @@ class SocialBlast
   end
 
   def add_service(service)
-puts "ADD_SERVICE: #{service}. Delivering_to includes it: #{delivering_to.include? service}"
     if have_service?(service) and configured?(service) and !delivering_to.include? service
       @services << service_class(service).new(self.message)
     end
@@ -104,6 +103,7 @@ puts "ADD_SERVICE: #{service}. Delivering_to includes it: #{delivering_to.includ
     self.class::Services.services_available(:configured).each do |s|
       self.add_service s
     end
+puts "ALL SERVICES: #{@services.inspect}"
     self
   end
 
