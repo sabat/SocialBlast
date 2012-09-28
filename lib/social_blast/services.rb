@@ -14,6 +14,8 @@ class SocialBlast
       if opt == :short
         services.collect { |s| const_get(s).short_name_sym }
       elsif opt == :configured
+puts "services available: started with #{services.inspect}"
+puts "and selected these: #{services.select { |c| self.const_get(c).configured? }}"
         services.select { |c| self.const_get(c).configured? }
       else
        services
