@@ -48,8 +48,7 @@ describe SocialBlast do
 
     it "can auto-add all available services" do
       prep_successful_blast
-      blast.all_services
-      blast.delivering_to.should eq [:TwitterService]
+      blast.all_services.delivering_to.should eq [:TwitterService]
     end
 
     it "says it can't post if it is not on" do
