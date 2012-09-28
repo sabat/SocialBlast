@@ -37,6 +37,7 @@ describe SocialBlast do
       mock_twitter.stub(:deliver).and_return(true)
       SocialBlast.any_instance.stub(:have_service?).with(:TwitterService).and_return(true)
       SocialBlast.any_instance.stub(:configured?).with(:TwitterService).and_return(true)
+      SocialBlast::Services::TwitterService.stub(:configured?).and_return(true)
       SocialBlast::Services::TwitterService.stub(:new).with(blast.message).and_return(mock_twitter)
     end
 
