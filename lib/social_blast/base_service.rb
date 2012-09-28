@@ -17,6 +17,7 @@ class SocialBlast
 
     def self.configured?
       service_auth_keywords.all? do |k|
+puts "  configured? keyword #{k}: #{app_config[k].present? && app_config[k].kind_of?(String)}"
         app_config[k].present? && app_config[k].kind_of?(String)
       end
     end
