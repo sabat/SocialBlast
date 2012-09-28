@@ -101,6 +101,7 @@ class SocialBlast
 
   def all_services
     self.class::Services.services_available(:configured).each do |s|
+puts "ALL SERVICES: ADDING: #{s.inspect}"
       self.add_service s
     end
 puts "ALL SERVICES: #{@services.inspect}"
