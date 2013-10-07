@@ -1,5 +1,6 @@
 require 'social_blast/base_service'
 require 'social_blast/services/twitter_service'
+require 'social_blast/services/buffer_service'
 # require 'social_blast/services/facebook_service'
 # require 'social_blast/services/googleplus_service'
 # require 'social_blast/services/wordpress_service'

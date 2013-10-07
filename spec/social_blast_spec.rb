@@ -31,7 +31,7 @@ describe SocialBlast do
   end
 
   context "when initialized" do
-    let(:mock_twitter) { mock SocialBlast::Services::TwitterService }
+    let(:mock_twitter) { double SocialBlast::Services::TwitterService }
     let(:prep_successful_blast) do
       mock_twitter.stub(:service_name).and_return(:TwitterService)
       mock_twitter.stub(:deliver).and_return(true)
@@ -109,7 +109,7 @@ describe SocialBlast do
   end
 
   context "when posting" do
-    let(:mock_twitter) { mock SocialBlast::Services::TwitterService }
+    let(:mock_twitter) { double SocialBlast::Services::TwitterService }
     before { mock_twitter }
     subject(:blast) { SocialBlast.new('test msg') }
 
