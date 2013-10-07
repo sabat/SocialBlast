@@ -1,12 +1,12 @@
-source :rubygems
+source 'https://rubygems.org'
 gemspec
 
 group :development, :test do
   gem 'debugger'
+  gem 'simplecov', require: false
 end
 
-gem 'simplecov', require: false, group: :test
-
+gem 'buff', github:  'sabat/buffer-ruby'
 gem 'hashie'
 gem 'json'
 gem 'rake'
