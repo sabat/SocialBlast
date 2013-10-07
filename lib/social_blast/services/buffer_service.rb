@@ -15,10 +15,11 @@ class SocialBlast
       #
 
       def deliver
-        pids = profile_ids
         buffer_client.create_update(
-          body: { text: @message },
-          profile_ids: pids,
+          body: {
+            text: @message,
+            profile_ids: profile_ids
+          },
           now: true,
           shorten: false
         )
