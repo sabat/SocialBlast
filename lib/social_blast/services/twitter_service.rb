@@ -3,7 +3,6 @@ require 'twitter/error'
 
 class SocialBlast
   class Services
-
     class TwitterService < SocialBlast::BaseService
       attr_reader :message
 

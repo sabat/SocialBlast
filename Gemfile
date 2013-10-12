@@ -2,7 +2,9 @@ source 'https://rubygems.org'
 gemspec
 
 group :development, :test do
+  gem 'awesome_print'
   gem 'debugger'
+  gem 'interactive_editor'
   gem 'simplecov', require: false
 end
 

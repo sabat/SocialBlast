@@ -1,18 +1,14 @@
 require 'social_blast/version'
-require 'social_blast/shm_store'
+require 'thresholdable'
 require 'social_blast/object'
 require 'social_blast/config'
-require 'social_blast/timed_counter'
 require 'social_blast/exceptions'
 require 'social_blast/services'
 
 class SocialBlast
-  extend ShmStore
-  include ShmStore
+  extend Thresholdable
 
   attr_reader :message
-
-  DEFAULT_THRESHOLD = 3
 
   class << self
     def on=(v)
@@ -22,43 +18,6 @@ class SocialBlast
     def on?
       self.on
     end
-  
-    def threshold=(v)
-      @threshold = v
-    end
-  
-    def threshold
-      @threshold ||= ( config.threshold || DEFAULT_THRESHOLD )
-    end
-
-    def post_counter
-      @post_counter ||= TimedCounter.new
-    end
-
-    def reset_post_count
-      post_counter.reset
-    end
-
-    def increment_post_count
-      post_counter.increment
-    end
-
-    def threshold_reached?
-      post_counter.value >= self.threshold
-    end
-
-    def can_post?
-      on? and !threshold_reached?
-    end
-
-    def when_can_post
-      t = if threshold_reached?
-        post_counter.timestamp + post_counter.interval_minutes
-      else
-        Time.now
-      end
-      t.to_s
-    end
 
     def services_available
       self::Services.services_available
@@ -66,6 +25,10 @@ class SocialBlast
   end
 
   #
+
+  def self.can_post?
+    on? && super
+  end
 
   def initialize(message)
     raise ArgumentError, 'cannot be empty' if message.blank?

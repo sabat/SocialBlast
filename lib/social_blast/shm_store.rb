@@ -1,5 +1,4 @@
 module ShmStore
-
   def set_val(name, val)
     if rails?
       Rails.cache.write(name, val)
@@ -20,6 +19,5 @@ module ShmStore
   def rails?
     Kernel.const_defined?('Rails')
   end
-
 end
 

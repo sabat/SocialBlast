@@ -44,7 +44,7 @@ describe SocialBlast do
     subject(:blast) { SocialBlast.new('test msg') }
     before { mock_twitter }
 
-    it { should be_kind_of(ShmStore) }
+    # it { should be_kind_of(ShmStore) }
     its(:message) { should_not be_empty }
 
     it "can auto-add all available services" do
@@ -132,8 +132,8 @@ describe SocialBlast do
     end
 
     it "can have its threshold set" do
-      SocialBlast.threshold = 3
-      SocialBlast.threshold.should eq(3)
+      SocialBlast.threshold = 5
+      SocialBlast.threshold.should eq 5
     end
 
     it "keeps track of posts per hour" do
