@@ -1,4 +1,5 @@
 require 'buff'
+require 'time'
 require 'thresholdable'
 require 'social_blast/config'
 
@@ -19,9 +20,8 @@ class SocialBlast
 
       #
 
-      def initialize(message, opts = {})
+      def initialize(message)
         super(message)
-        @options = opts
       end
 
       def deliver
@@ -82,6 +82,10 @@ class SocialBlast
           app_config[service_name].key?(:threshold)
       end
 
+      def time_ahead(mins)
+        (Time.now + (mins * 60)).utc.iso8601
+      end
+
       def request_data
         req_data = {
           body: {
@@ -90,9 +94,8 @@ class SocialBlast
           },
           shorten: false
         }
-
-        if @options[:schedule_for]
-          req_data[:scheduled_at] = @options[:schedule_for]
+        if app_config[:post_ahead_mins] && app_config[:post_ahead_mins].nonzero?
+          req_data[:scheduled_at] = time_ahead app_config[:post_ahead_mins]
         else
           req_data[:now] = true
         end

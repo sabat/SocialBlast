@@ -1,4 +1,5 @@
 require 'spec_helper'
+require "time"
 
 describe SocialBlast::Services::BufferService do
   let!(:valid_config) do
@@ -85,9 +86,14 @@ describe SocialBlast::Services::BufferService do
     end
 
     context "when a scheduled time is set" do
-      subject(:buff_client) { SocialBlast::Services::BufferService.new('a message', schedule_for: '2013-10-15T22:02:08Z') }
+      # subject(:buff_client) { SocialBlast::Services::BufferService.new('a message', schedule_for: '2013-10-15T22:02:08Z') }
+      before { SocialBlast.configure { |c| c[:buffer].post_ahead_mins = 15 } }
+      after { SocialBlast.configure { |c| c[:buffer].post_ahead_mins = nil } }
+
+      let!(:timestamp) { (Time.now + (15 * 60)).utc.iso8601 }
 
       it "sets scheduled_at" do
+        $FOO=true
         Buff::Client.any_instance.should_receive(:profiles).and_return(profile_id)
         Buff::Client
           .any_instance
@@ -95,7 +101,7 @@ describe SocialBlast::Services::BufferService do
           .with(
             body: { text: "a message", profile_ids: ["203948sd232"] },
             shorten: false,
-            scheduled_at: "2013-10-15T22:02:08Z"
+            scheduled_at: timestamp
           )
         expect { buff_client.deliver }.to_not raise_error
       end
