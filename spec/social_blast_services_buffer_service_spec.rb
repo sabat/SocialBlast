@@ -71,6 +71,36 @@ describe SocialBlast::Services::BufferService do
       expect { buff_client.deliver }.to raise_error(Exception)
     end
 
+    it "delivers immediately if no schedule time is specified" do
+      Buff::Client.any_instance.should_receive(:profiles).and_return(profile_id)
+      Buff::Client
+        .any_instance
+        .should_receive(:create_update)
+        .with(
+          body: { text: "a message", profile_ids: ["203948sd232"] },
+          shorten: false,
+          now: true
+        )
+      expect { buff_client.deliver }.to_not raise_error
+    end
+
+    context "when a scheduled time is set" do
+      subject(:buff_client) { SocialBlast::Services::BufferService.new('a message', schedule_for: '2013-10-15T22:02:08Z') }
+
+      it "sets scheduled_at" do
+        Buff::Client.any_instance.should_receive(:profiles).and_return(profile_id)
+        Buff::Client
+          .any_instance
+          .should_receive(:create_update)
+          .with(
+            body: { text: "a message", profile_ids: ["203948sd232"] },
+            shorten: false,
+            scheduled_at: "2013-10-15T22:02:08Z"
+          )
+        expect { buff_client.deliver }.to_not raise_error
+      end
+    end
+
     context "when a service has its own posting threshold" do
       it "delivers when the threshold has not been reached" do
         ServiceThreshold.any_instance.should_receive(:can_post?).and_return(true)

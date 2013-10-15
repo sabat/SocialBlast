@@ -19,23 +19,14 @@ class SocialBlast
 
       #
 
-      def initialize(message)
+      def initialize(message, opts = {})
         super(message)
+        @options = opts
       end
 
       def deliver
         initialize_service_settings
-        postable_profile_ids = profile_ids
-        if postable_profile_ids.any?
-          buffer_client.create_update(
-            body: {
-              text: @message,
-              profile_ids: postable_profile_ids
-            },
-            now: true,
-            shorten: false
-          )
-        end
+        buffer_client.create_update(request_data) if profile_ids.any?
       rescue Exception => e
         raise DeliveryException, e.message
       ensure
@@ -71,7 +62,7 @@ class SocialBlast
       end
 
       def profile_ids
-        postable_profiles.collect { |p| p.id }
+        @profile_ids ||= postable_profiles.collect { |p| p.id }
       end
 
       def profile_services
@@ -89,6 +80,24 @@ class SocialBlast
       def threshold_exists_for(service_name)
         config_exists_for(service_name) &&
           app_config[service_name].key?(:threshold)
+      end
+
+      def request_data
+        req_data = {
+          body: {
+            text: @message,
+            profile_ids: profile_ids
+          },
+          shorten: false
+        }
+
+        if @options[:schedule_for]
+          req_data[:scheduled_at] = @options[:schedule_for]
+        else
+          req_data[:now] = true
+        end
+
+        req_data
       end
 
       def initialize_service_settings
