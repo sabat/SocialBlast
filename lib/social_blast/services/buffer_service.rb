@@ -26,7 +26,10 @@ class SocialBlast
 
       def deliver
         initialize_service_settings
-        buffer_client.create_update(request_data) if profile_ids.any?
+        if profile_ids.any?
+          ret_msg = buffer_client.create_update(request_data)
+          puts ret_msg.inspect
+        end
       rescue Exception => e
         raise DeliveryException, e.message
       ensure
